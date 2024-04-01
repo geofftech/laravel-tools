@@ -1,0 +1,19 @@
+{
+  "name": "geofftech/laravel-tools",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "GeoffTech\\LaravelTools\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Geoff",
+      "email": "geoff@geofftech.com"
+    }
+  ],
+  "require": {
+    "php": "^8.2"
+  }
+}
