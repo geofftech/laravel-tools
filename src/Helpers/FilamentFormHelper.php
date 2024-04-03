@@ -1,6 +1,6 @@
 <?php
 
-namespace App\helpers;
+namespace GeoffTech\LaravelTools\Helpers;
 
 use Filament\Forms\Components\Actions\Action;
 
