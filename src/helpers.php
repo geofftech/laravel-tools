@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Number;
+
 if (!function_exists('enumIn')) {
     function enumIn($check, array $enums)
     {
@@ -14,5 +16,16 @@ if (!function_exists('enumIn')) {
         }
 
         return false;
+    }
+}
+
+if (!function_exists('money')) {
+    function money($value)
+    {
+        if (is_null($value)) {
+            return null;
+        }
+
+        return Number::currency($value / 100);
     }
 }
