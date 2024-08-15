@@ -65,8 +65,6 @@ trait HasStorage
 
         $missingFileNames = array_diff($newFileNames, $oldFileNames);
 
-        dump([$fieldName, $properties, $newFileNames, $oldFileNames, $missingFileNames]);
-
         // delete all files
         foreach ($missingFileNames as $fileName) {
             $this->deleteFile($fileName);
