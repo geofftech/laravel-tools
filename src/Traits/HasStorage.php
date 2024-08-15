@@ -51,7 +51,7 @@ trait HasStorage
     {
         // field name + string = split by "," into an array
         if (is_string($properties)) {
-            $properties = explode(",", $properties);
+            $properties = explode(',', $properties);
         }
 
         // filed name + function = returns array of values
@@ -70,7 +70,6 @@ trait HasStorage
             $this->deleteFile($fileName);
         }
     }
-
 
     public function clearStorageOnDelete(): void
     {
@@ -95,7 +94,7 @@ trait HasStorage
     {
         // field name + string = split by "," into an array
         if (is_string($properties)) {
-            $properties = explode(",", $properties);
+            $properties = explode(',', $properties);
         }
 
         // filed name + function = returns array of values
@@ -115,12 +114,14 @@ trait HasStorage
 
     private function iterate(&$fileNames, $properties, $json)
     {
-        if (!$json) return;
+        if (!$json) {
+            return;
+        }
 
         foreach ($json as $key => $value) {
             if (is_array($value)) {
                 $this->iterate($fileNames, $properties, $value);
-            } else if (is_string($value) && in_array($key, $properties)) {
+            } elseif (is_string($value) && in_array($key, $properties)) {
                 $fileNames[] = $value;
             }
         }
@@ -138,7 +139,7 @@ trait HasStorage
     public function deleteFile($fileName)
     {
         if (!is_null($fileName)) {
-            Log::info('deleting ' . $fileName);
+            Log::info('deleting '.$fileName);
             Storage::disk('public')->delete($fileName);
         }
     }

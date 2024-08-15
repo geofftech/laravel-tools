@@ -22,5 +22,12 @@
   },
   "require-dev": {
     "laravel/pint": "^1.17"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "GeoffTech\\LaravelTools\\ServiceProvider"
+      ]
+    }
   }
 }
