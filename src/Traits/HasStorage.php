@@ -139,7 +139,7 @@ trait HasStorage
     public function deleteFile($fileName)
     {
         if (!is_null($fileName)) {
-            Log::info('deleting '.$fileName);
+            Log::info('deleting ' . $fileName);
             Storage::disk('public')->delete($fileName);
         }
     }
