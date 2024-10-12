@@ -38,16 +38,16 @@ trait HasStorage
                 $fileName = $this->getOriginal($fieldName);
 
                 if ($this->isDirty($fieldName)) {
-                    $this->deleteFile($fileName);
+                    $this->hasStorageDeleteFile($fieldName, $fileName);
                 }
             } else {
                 // field name + descriptor = search JSON for values of this prop
-                $this->onUpdateJsonField($index, $fieldName);
+                $this->clearStorageOnUpdateJsonField($index, $fieldName);
             }
         }
     }
 
-    private function onUpdateJsonField($fieldName, $properties)
+    private function clearStorageOnUpdateJsonField($fieldName, $properties)
     {
         // field name + string = split by "," into an array
         if (is_string($properties)) {
@@ -60,14 +60,14 @@ trait HasStorage
         }
 
         // field name + array = scan json for these fields
-        $newFileNames = $this->extractFileNames($properties, $this->getOriginal($fieldName));
-        $oldFileNames = $this->extractFileNames($properties, $this->{$fieldName});
+        $newFileNames = $this->hasStorageExtractFileNames($properties, $this->getOriginal($fieldName));
+        $oldFileNames = $this->hasStorageExtractFileNames($properties, $this->{$fieldName});
 
         $missingFileNames = array_diff($newFileNames, $oldFileNames);
 
         // delete all files
         foreach ($missingFileNames as $fileName) {
-            $this->deleteFile($fileName);
+            $this->hasStorageDeleteFile($fieldName, $fileName);
         }
     }
 
@@ -82,15 +82,15 @@ trait HasStorage
                 // numeric id + field name = use this value exactly
                 $fileName = $this->getOriginal($fieldName);
 
-                $this->deleteFile($fileName);
+                $this->hasStorageDeleteFile($fieldName, $fileName);
             } else {
                 // field name + descriptor = search JSON for values of this prop
-                $this->onDeleteJsonField($index, $fieldName);
+                $this->clearStorageOnDeleteJsonField($index, $fieldName);
             }
         }
     }
 
-    private function onDeleteJsonField($fieldName, $properties)
+    private function clearStorageOnDeleteJsonField($fieldName, $properties)
     {
         // field name + string = split by "," into an array
         if (is_string($properties)) {
@@ -104,15 +104,15 @@ trait HasStorage
 
         // field name + array = scan json for these fields
         $json = $this->getOriginal($fieldName);
-        $fileNames = $this->extractFileNames($properties, $json);
+        $fileNames = $this->hasStorageExtractFileNames($properties, $json);
 
         // delete all files
         foreach ($fileNames as $fileName) {
-            $this->deleteFile($fileName);
+            $this->hasStorageDeleteFile($fieldName, $fileName);
         }
     }
 
-    private function iterate(&$fileNames, $properties, $json)
+    private function hasStorageIterate(&$fileNames, $properties, $json)
     {
         if (!$json) {
             return;
@@ -120,27 +120,45 @@ trait HasStorage
 
         foreach ($json as $key => $value) {
             if (is_array($value)) {
-                $this->iterate($fileNames, $properties, $value);
+                $this->hasStorageIterate($fileNames, $properties, $value);
             } elseif (is_string($value) && in_array($key, $properties)) {
                 $fileNames[] = $value;
             }
         }
     }
 
-    public function extractFileNames($properties, $json)
+    public function hasStorageExtractFileNames($properties, $json)
     {
         $fileNames = [];
 
-        $this->iterate($fileNames, $properties, $json);
+        $this->hasStorageIterate($fileNames, $properties, $json);
 
         return array_unique($fileNames);
     }
 
-    public function deleteFile($fileName)
+    public function hasStorageDeleteFile($fieldName, $fileName)
     {
         if (!is_null($fileName)) {
-            Log::info('deleting ' . $fileName);
-            Storage::disk('public')->delete($fileName);
+            $disk = $this->hasStorageGetDisk($fieldName);
+
+            Log::info('storage:delete', [
+                'file' => $fileName,
+                'disk' => $disk,
+            ]);
+
+            Storage::disk($disk)->delete($fileName);
         }
+    }
+
+    public function hasStorageGetDisk($fieldName)
+    {
+        $default = 'public';
+        $disk = $this->storage_disk ?? $default;
+
+        if (is_array($disk)) {
+            return $disk[$fieldName] ?? $default;
+        }
+
+        return $disk;
     }
 }

@@ -9,24 +9,40 @@ Various useful features and functions
 - On update, removed any files no longer linked to the model.
 - On delete, removes all linked files.
 
-```
+```php
     use HasStorage;
 
     protected $storage = [
         'image',
         'banner',
         'content' => 'image',
+        'content' => 'image,file',
+        'content' => ['image', 'file'],
     ];
 ```
 
-For simple fields
+For `simple fields`
 
 - just pass the field name
 
-For json fields
+For `JSON fields`
 
-- we will extract out all properties in the JSON that match the names passed.
+- we will extract out all properties in the JSON that match the property names passed.
 - this can be a comma delimited string, an array, or a function that returns an array.
+
+This assumes the `public` disk. To set the disk
+
+```php
+    protected $storage_disk = 'private';
+```
+
+or to set per field
+
+```php
+    protected $storage_disk = [
+        'content' => 'private'
+        ];
+```
 
 ## ArrayHelper
 
