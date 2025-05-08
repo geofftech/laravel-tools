@@ -31,10 +31,10 @@ if (!function_exists('money')) {
 }
 
 if (!function_exists('summary')) {
-    function summary(string $content, int $words = 10)
+    function summary(string $content, int $wordCount = 10)
     {
         return Str(strip_tags($content))
             ->replace('&nbsp;', ' ')
-            ->words($words);
+            ->words($wordCount);
     }
 }
