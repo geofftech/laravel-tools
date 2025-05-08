@@ -22,10 +22,10 @@ if (!function_exists('enumIn')) {
 if (!function_exists('money')) {
     function money($value)
     {
-        if (is_null($value)) {
+        if ($value === null) {
             return null;
         }
 
-        return Number::currency($value / 100);
+        return Number::currency($value);
     }
 }
