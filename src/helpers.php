@@ -29,3 +29,12 @@ if (!function_exists('money')) {
         return Number::currency($value);
     }
 }
+
+if (!function_exists('summary')) {
+    function summary(string $content, int $words = 10)
+    {
+        return Str(strip_tags($content))
+            ->replace('&nbsp;', ' ')
+            ->words($words);
+    }
+}
