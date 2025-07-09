@@ -152,7 +152,8 @@ trait HasStorage
 
     public function hasStorageGetDisk($fieldName)
     {
-        $default = 'public';
+        $default = config('filesystems.default');
+
         $disk = $this->storage_disk ?? $default;
 
         if (is_array($disk)) {
