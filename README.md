@@ -2,6 +2,41 @@
 
 Various useful features and functions
 
+## Agent Instructions
+
+This is a Laravel package providing utility traits and helper classes. When working with this package:
+
+### Package Structure
+
+- **Traits**: Located in `src/Traits/` - reusable functionality for Laravel models
+- **Helpers**: Located in `src/Helpers/` - utility classes for common operations
+- **Controllers**: Located in `src/Controllers/` - base controller functionality
+- **Config**: Package configuration in `config/tools.php`
+- **Service Provider**: Main package registration in `src/ServiceProvider.php`
+
+### Development Guidelines
+
+- Follow PSR-4 autoloading standards with namespace `GeoffTech\LaravelTools`
+- Use Laravel conventions for naming and structure
+- Include comprehensive docblocks for all public methods
+- Write tests for new functionality
+- Maintain backward compatibility when possible
+- Use semantic versioning for releases
+
+### Key Features
+
+- **HasStorage Trait**: Automatic file cleanup for model storage fields
+- **ArrayHelper**: Utility methods for array manipulation
+- **HtmlHelper**: HTML content processing utilities
+
+### Testing
+
+Run tests with: `composer test` or `./vendor/bin/phpunit`
+
+### Code Style
+
+Use Laravel Pint for code formatting: `./vendor/bin/pint`
+
 ## HasStorage Trait
 
 - if a model has links to files in storage, this trait will ensure those files are removed when they are de-linked from the model.
